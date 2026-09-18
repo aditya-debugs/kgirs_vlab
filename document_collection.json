@@ -1,0 +1,26 @@
+{
+  "collection_name": "IR Virtual Lab - Simulated Document Collection",
+  "description": "A hardcoded educational document collection. The PDF filenames are displayed in the Streamlit interface, while the corresponding extracted textual content is stored here and processed internally.",
+  "documents": [
+    {
+      "pdf_name": "Introduction_to_Information_Retrieval.pdf",
+      "description": "Introduces Information Retrieval, document collections, queries, indexing and retrieval.",
+      "text": "Information Retrieval is the process of obtaining relevant information from a collection of documents. An information retrieval system stores and processes documents so that useful information can be found in response to a user query. Document processing is an important stage because raw textual documents often contain punctuation, inconsistent capitalization and common words. Cleaning, tokenization, normalization, stop word removal and stemming can produce a consistent representation for indexing and retrieval."
+    },
+    {
+      "pdf_name": "Text_Preprocessing_Techniques.pdf",
+      "description": "Explains common preprocessing operations such as normalization, tokenization, stop-word removal and stemming.",
+      "text": "Text preprocessing prepares documents before information retrieval and text mining. Normalization converts text into a consistent form, while tokenization divides sentences into individual terms. Stop word removal can eliminate frequently occurring words that contribute relatively little in some retrieval settings. Stemming reduces related forms of words to common stems. These techniques help retrieval systems process textual collections efficiently and consistently."
+    },
+    {
+      "pdf_name": "Inverted_Index_and_Retrieval.pdf",
+      "description": "Describes how processed document terms can later support indexing and retrieval.",
+      "text": "An inverted index maps terms to the documents in which those terms occur. Before an inverted index is constructed, documents can be cleaned, tokenized and normalized. Stop words may be removed and related word forms may be reduced through stemming. The resulting retrieval ready terms can then be associated with document identifiers. When a query is processed using similar operations, the system can locate documents containing useful terms and rank relevant results."
+    },
+    {
+      "pdf_name": "Search_Engine_Document_Processing.pdf",
+      "description": "Provides a simplified view of how a search system processes documents before retrieval.",
+      "text": "Search systems process large collections of textual documents before users perform searches. The document pipeline may acquire extracted text, clean unnecessary characters, tokenize words, remove common stop words and reduce word variations. The processed terms can be stored in an index. During retrieval, a user query is processed in a compatible way and its terms are matched against the indexed document collection. Consistent preprocessing improves the compatibility between documents and queries."
+    }
+  ]
+}
