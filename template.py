@@ -299,7 +299,12 @@ def generate_pdf_report(
     pdf.set_font("Helvetica", "", 9)
     pdf.set_text_color(40, 40, 40)
     for obj in EXPERIMENT_CONFIG["objectives"]:
-        pdf.multi_cell(0, 5, safe_pdf_text("- " + obj))
+        pdf.multi_cell(
+            0, 5,
+            safe_pdf_text("- " + obj),
+            new_x="LMARGIN",
+            new_y="NEXT"
+        )
     pdf.ln(4)
 
     pdf.set_font("Helvetica", "B", 11)
@@ -343,7 +348,11 @@ def generate_pdf_report(
         pdf.set_text_color(20, 20, 20)
 
         for col in cols:
-            pdf.cell(col_w, 6, safe_pdf_text(str(col)[:16]), 1, 0, "C", True)
+            pdf.cell(
+                col_w, 6, safe_pdf_text(str(col)[:16]),
+                border=1, new_x="RIGHT", new_y="TOP",
+                align="C", fill=True
+            )
         pdf.ln()
 
         pdf.set_font("Helvetica", "", 7)
@@ -353,7 +362,8 @@ def generate_pdf_report(
                 pdf.cell(
                     col_w, 5,
                     safe_pdf_text(str(row[col])[:16]),
-                    1, 0, "C"
+                    border=1, new_x="RIGHT", new_y="TOP",
+                    align="C"
                 )
             pdf.ln()
 
@@ -629,33 +639,28 @@ def render_simulation_section():
         "Its extracted text is loaded internally from the JSON collection."
     )
 
-    if st.button(
-        "Run Document Processing Pipeline",
-        type="primary",
-        use_container_width=True
-    ):
-        st.session_state["last_result"] = process_document(
-            selected_doc["text"],
-            do_clean=do_clean,
-            do_stopword=do_stopword,
-            do_stemming=do_stemming
-        )
-        st.session_state["last_pdf"] = selected_pdf
-        st.session_state["last_config"] = {
-            "Cleaning": do_clean,
-            "Stop-word Removal": do_stopword,
-            "Stemming": do_stemming
-        }
-
-    if "last_result" not in st.session_state:
-        st.warning("Run the pipeline to observe the document transformation.")
-        return
-
-    result = st.session_state["last_result"]
+    result = process_document(
+        selected_doc["text"],
+        do_clean=do_clean,
+        do_stopword=do_stopword,
+        do_stemming=do_stemming
+    )
+    st.session_state["last_result"] = result
+    st.session_state["last_pdf"] = selected_pdf
+    st.session_state["last_config"] = {
+        "Cleaning": do_clean,
+        "Stop-word Removal": do_stopword,
+        "Stemming": do_stemming
+    }
     metrics = calculate_metrics(result)
 
     st.divider()
     st.subheader("Pipeline Execution")
+
+    st.caption(
+        "The output below updates automatically whenever you change the "
+        "selected document or the processing configuration above."
+    )
 
     st.markdown(
         f"**Document Acquisition → Cleaning → Tokenization → "
@@ -742,7 +747,7 @@ def render_simulation_section():
         yaxis_title="Number of Terms",
         height=400
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     st.divider()
     st.subheader("Term Frequency Preview")
@@ -757,7 +762,7 @@ def render_simulation_section():
         st.dataframe(
             freq_df,
             hide_index=True,
-            use_container_width=True
+            width="stretch"
         )
 
     st.divider()
@@ -766,7 +771,7 @@ def render_simulation_section():
     if st.button(
         "Record Current Trial",
         type="primary",
-        use_container_width=True
+        width="stretch"
     ):
         trial = {
             "Trial #": len(st.session_state["trials"]) + 1,
@@ -792,7 +797,7 @@ def render_simulation_section():
         st.dataframe(
             trials_df,
             hide_index=True,
-            use_container_width=True
+            width="stretch"
         )
 
         csv_data = trials_df.to_csv(index=False).encode("utf-8")
@@ -801,7 +806,7 @@ def render_simulation_section():
             data=csv_data,
             file_name="document_processing_trials.csv",
             mime="text/csv",
-            use_container_width=True
+            width="stretch"
         )
     else:
         st.info(
@@ -944,7 +949,7 @@ def render_report_section():
         st.dataframe(
             trials_df,
             hide_index=True,
-            use_container_width=True
+            width="stretch"
         )
     else:
         st.info("No experimental trials have been recorded yet.")
@@ -968,7 +973,7 @@ def render_report_section():
         file_name="IR_Document_Processing_Lab_Report.pdf",
         mime="application/pdf",
         type="primary",
-        use_container_width=True
+        width="stretch"
     )
 
 
